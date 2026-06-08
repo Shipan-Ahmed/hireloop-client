@@ -1,11 +1,11 @@
 'use client';
 
-
+import { Description, Radio, RadioGroup } from "@heroui/react";
 import { authClient } from '@/lib/auth-client';
 import { Button, Card, FieldError, Form, Input, Label, TextField } from '@heroui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaCheck } from 'react-icons/fa';
 import { FaGoogle } from 'react-icons/fa6';
@@ -13,6 +13,7 @@ import { FaGoogle } from 'react-icons/fa6';
 
 const SignupPage = () => {
     const router = useRouter();
+    const [role, setRole] = useState("jobseeker");
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -23,6 +24,7 @@ const SignupPage = () => {
             name: userData.name,
             email: userData.email,
             password: userData.password,
+            role: role,
 
         })
 
@@ -99,6 +101,28 @@ const SignupPage = () => {
                     <Input placeholder="Enter your password" />
                     <FieldError />
                 </TextField>
+                <div className="flex flex-col gap-4">
+                    <Label>User Type</Label>
+                    <RadioGroup  defaultValue="jobseeker" name="role" orientation="horizontal" onChange={(value) => setRole(value)}>
+                        <Radio value="jobseeker">
+                            <Radio.Control>
+                                <Radio.Indicator />
+                            </Radio.Control>
+                            <Radio.Content>
+                                <Label>Job Seeker</Label>
+                            </Radio.Content>
+                        </Radio>
+                        <Radio value="recruiter">
+                            <Radio.Control>
+                                <Radio.Indicator />
+                            </Radio.Control>
+                            <Radio.Content>
+                                <Label>Recruiter</Label>
+                            </Radio.Content>
+                        </Radio>
+                      
+                    </RadioGroup>
+                </div>
                 <div className="flex gap-2">
                     <Button type="submit">
                         <FaCheck />
