@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Fieldset, TextField, Input, Select, Label, ListBox, Button, Switch } from "@heroui/react";
 import { FiBriefcase, FiDollarSign, FiMapPin, FiCalendar, FiFileText } from "react-icons/fi";
+import { createPost } from "@/lib/actions/jobs";
+import toast from "react-hot-toast";
 
 export default function NewJobPost() {
     const autoFilledCompany = {
@@ -68,11 +70,17 @@ export default function NewJobPost() {
         };
 
         console.log("Submitting job payload:", submissionPayload);
+        const result = await createPost(submissionPayload);
+        if (result.insertedId) {
+            toast.success("Job posted successfully!");
+            e.target.reset();
+            revalidatePath("/deshboard/recruiter");
+        }
 
-        setTimeout(() => {
-            setLoading(false);
-            alert("Job posted successfully!");
-        }, 1000);
+        // setTimeout(() => {
+        //     setLoading(false);
+        //     alert("Job posted successfully!");
+        // }, 1000);
     };
 
     if (!mounted) return null;
